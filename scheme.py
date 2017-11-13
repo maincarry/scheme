@@ -31,7 +31,12 @@ def scheme_eval(expr, env, _=None): # Optional third argument is ignored
         return SPECIAL_FORMS[first](rest, env)
     else:
         # BEGIN PROBLEM 5
-        "*** YOUR CODE HERE ***"
+        # Call expression
+        oper = scheme_eval(expr.first, env)
+        check_procedure(oper) # will raise error if oper is not callable
+        oprd = expr.second
+        return oper.eval_call(oprd, env)
+
         # END PROBLEM 5
 
 def self_evaluating(expr):
@@ -114,7 +119,10 @@ class Procedure:
         unevaluated actual-parameter expressions and ENV as the environment
         in which the operands are to be evaluated."""
         # BEGIN PROBLEM 5
-        "*** YOUR CODE HERE ***"
+        arguments = operands.map(lambda oprd: scheme_eval(oprd, env))
+        # print(arguments, self)
+        return scheme_apply(self, arguments, env)
+
         # END PROBLEM 5
 
 def scheme_procedurep(x):
@@ -225,7 +233,10 @@ def do_define_form(expressions, env):
     if scheme_symbolp(target):
         check_form(expressions, 2, 2)
         # BEGIN PROBLEM 6
-        "*** YOUR CODE HERE ***"
+        name = str(target)
+        value = scheme_eval(expressions.second.first, env)
+        env.define(name, value)
+        return name
         # END PROBLEM 6
     elif isinstance(target, Pair) and scheme_symbolp(target.first):
         # BEGIN PROBLEM 10
@@ -239,7 +250,7 @@ def do_quote_form(expressions, env):
     """Evaluate a quote form."""
     check_form(expressions, 1, 1)
     # BEGIN PROBLEM 7
-    "*** YOUR CODE HERE ***"
+    return expressions.first
     # END PROBLEM 7
 
 def do_begin_form(expressions, env):

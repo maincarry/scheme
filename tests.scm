@@ -8,6 +8,21 @@
 
 ;;; **********************************
 ;;; *** Add more of your own here! ***
+
+
+(odd? 5)
+; expect #t
+
+(+ 10 5)
+15
+
+
+
+
+
+
+
+
 ;;; **********************************
 
 ;;; These are examples from several sections of "The Structure
