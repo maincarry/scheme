@@ -6,7 +6,9 @@
 ; Some utility functions that you may find useful to implement.
 
 (define (cons-all first rests)
-  (if (Null? rests) nil (cons (cons first (car rests)) (cons-all first (cdr rests))))
+ (define (helper l)
+  (cons first l))
+ (map helper rests)
 )
 
 (define (zip pairs)
@@ -17,7 +19,9 @@
 (define (enumerate s)
   ; BEGIN PROBLEM 17
   (define (helper l i)
-    (if (Null? l) nil (cons (cons i (cons (car l) nil)) (helper (cdr l) (+ 1 i))))
+    (if (null? l)
+     nil
+     (cons (cons i (cons (car l) nil)) (helper (cdr l) (+ 1 i))))
   )
   (helper s 0)
 )
@@ -26,13 +30,15 @@
 ;; Problem 18
 ;; List all ways to make change for TOTAL with DENOMS
 (define (list-change total denoms)
-  ; BEGIN PROBLEM 18
-  (cond
-    ((Null? denoms) nil)
-    ((< total (car denoms)) (list-change total (cdr denoms)))
-    ((= total (car denoms)) (cons (list(car denoms)) (list-change total (cdr denoms))))
-    (else (append (cons-all (car denoms) (list-change (- total (car denoms)) denoms)) (list-change total (cdr denoms))))
-  )
+ ; BEGIN PROBLEM 18
+ (cond
+  ((null? denoms) nil)
+  ((> (car denoms) total) (list-change total (cdr denoms)))
+  ((= (car denoms) total) (cons (list total) (list-change total (cdr denoms))))
+  (else (append
+         (cons-all (car denoms) (list-change (- total (car denoms)) denoms))
+         (list-change total (cdr denoms))))
+ )
 )
   ; END PROBLEM 18
 
