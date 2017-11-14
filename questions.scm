@@ -12,7 +12,9 @@
 )
 
 (define (zip pairs)
-  'replace-this-line)
+ (if (null? pairs) (cons nil (cons nil nil))
+  (cons (map car pairs) (list (map cadr pairs))))
+)
 
 ;; Problem 17
 ;; Returns a list of two-element lists
@@ -56,12 +58,12 @@
 (define (let-to-lambda expr)
   (cond ((atom? expr)
          ; BEGIN PROBLEM 19
-         'replace-this-line
+         expr
          ; END PROBLEM 19
          )
         ((quoted? expr)
          ; BEGIN PROBLEM 19
-         'replace-this-line
+         expr
          ; END PROBLEM 19
          )
         ((or (lambda? expr)
@@ -70,18 +72,20 @@
                (params (cadr expr))
                (body   (cddr expr)))
            ; BEGIN PROBLEM 19
-           'replace-this-line
+          (cons form (cons params (map let-to-lambda body)))
            ; END PROBLEM 19
            ))
         ((let? expr)
          (let ((values (cadr expr))
                (body   (cddr expr)))
            ; BEGIN PROBLEM 19
-           'replace-this-line
+          (cons
+           (cons 'lambda (cons (car (zip values)) (map let-to-lambda body)))
+           (map let-to-lambda (cadr (zip values))))
            ; END PROBLEM 19
            ))
         (else
          ; BEGIN PROBLEM 19
-         'replace-this-line
+         (cons (car expr) (map let-to-lambda (cdr expr)))
          ; END PROBLEM 19
          )))
