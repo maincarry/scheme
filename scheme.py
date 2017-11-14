@@ -109,7 +109,11 @@ class Frame:
         """
         child = Frame(self) # Create a new child with self as the parent
         # BEGIN PROBLEM 11
-        "*** YOUR CODE HERE ***"
+        if len(formals) != len(vals):
+            raise SchemeError("Non-matching number of formals and vals")
+        while formals is not nil:
+            child.define(formals.first, vals.first)
+            formals, vals = formals.second, vals.second
         # END PROBLEM 11
         return child
 
@@ -194,6 +198,7 @@ class LambdaProcedure(UserDefinedProcedure):
         of values, for a lexically-scoped call evaluated in environment ENV."""
         # BEGIN PROBLEM 12
         "*** YOUR CODE HERE ***"
+        return self.env.make_child_frame(self.formals, args)
         # END PROBLEM 12
 
     def __str__(self):
@@ -245,7 +250,14 @@ def do_define_form(expressions, env):
         # END PROBLEM 6
     elif isinstance(target, Pair) and scheme_symbolp(target.first):
         # BEGIN PROBLEM 10
-        "*** YOUR CODE HERE ***"
+        # shorthand definition for defining lambda
+        name = str(target.first)
+        arguments = target.second
+        body = expressions.second
+        func = LambdaProcedure(arguments, body, env)
+        env.define(name, func)
+        return name
+
         # END PROBLEM 10
     else:
         bad_target = target.first if isinstance(target, Pair) else target
@@ -283,13 +295,29 @@ def do_if_form(expressions, env):
 def do_and_form(expressions, env):
     """Evaluate a (short-circuited) and form."""
     # BEGIN PROBLEM 13
-    "*** YOUR CODE HERE ***"
+    if expressions is nil:
+        return True
+    while True:
+        val = scheme_eval(expressions.first, env)
+        if expressions.second is nil:
+            return val
+        if scheme_falsep(val):
+            return val
+        expressions = expressions.second
     # END PROBLEM 13
 
 def do_or_form(expressions, env):
     """Evaluate a (short-circuited) or form."""
     # BEGIN PROBLEM 13
-    "*** YOUR CODE HERE ***"
+    if expressions is nil:
+        return False
+    while True:
+        val = scheme_eval(expressions.first, env)
+        if scheme_truep(val):
+            return val
+        if expressions.second is nil:
+            return val
+        expressions = expressions.second
     # END PROBLEM 13
 
 def do_cond_form(expressions, env):
