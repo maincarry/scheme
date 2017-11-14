@@ -21,8 +21,12 @@
 (myfunc 5)
 ; expect 6
 
-
-
+(define mymu1 (mu (x) (* x y)))
+; expect mymu1
+(define myfunc1 (lambda (x y) (mymu1 (+ x x))))
+; expect myfunc1
+(myfunc1 5 6)
+; expect 60
 
 
 
@@ -122,12 +126,6 @@ circumference
   (sum-of-squares (+ a 1) (* a 2)))
 (f 5)
 ; expect 136
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Move the following (exit) line to run additional tests. ;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(exit)
-
 
 
 ;;; 1.1.6
@@ -665,3 +663,8 @@ one-through-four
 
 (hyp 3 4)
 ; expect 5.000023178253949
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Move the following (exit) line to run additional tests. ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(exit)
