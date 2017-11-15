@@ -217,7 +217,8 @@ class MacroProcedure(LambdaProcedure):
         actual-parameter expressions and ENV as the environment in which the
         resulting expanded expression is to be evaluated."""
         # BEGIN Problem 21
-        "*** YOUR CODE HERE ***"
+        res = scheme_apply(self, operands, env)
+        return scheme_eval(complete_eval(res), env)
         # END Problem 21
 
 def add_primitives(frame, funcs_and_names):
@@ -372,7 +373,19 @@ def make_let_frame(bindings, env):
 def do_define_macro(expressions, env):
     """Evaluate a define-macro form."""
     # BEGIN Problem 21
-    "*** YOUR CODE HERE ***"
+    check_form(expressions, 2)
+    target = expressions.first
+
+    if isinstance(target, Pair) and scheme_symbolp(target.first):
+        name = str(target.first)
+        arguments = target.second
+        body = expressions.second
+        macro = MacroProcedure(arguments, body, env)
+        env.define(name, macro)
+        return name
+    else:
+        bad_target = target.first if isinstance(target, Pair) else target
+        raise SchemeError('non-symbol: {0}'.format(bad_target))
     # END Problem 21
 
 
