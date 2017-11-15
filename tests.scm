@@ -601,7 +601,6 @@ one-through-four
 ;;; Extra credit ;;;
 ;;;;;;;;;;;;;;;;;;;;
 
-(exit)
 
 ; Tail call optimization tests
 
@@ -628,7 +627,6 @@ one-through-four
 (sum 1001 0)
 ; expect 501501
 
-(exit)
 
 ; macro tests
 
